@@ -6,7 +6,10 @@ const cors = require("cors");
 const books = require("./src/routes/BooksRouter");
 const readingStatuses = require("./src/routes/ReadingStatusesRouter");
 
+//where to use it
 const app = express();
+
+console.log("hello")
 
 app.use(cors());
 app.use(express.json());

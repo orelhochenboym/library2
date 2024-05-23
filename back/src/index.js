@@ -18,6 +18,7 @@ const getLocation = async (City, Country) => {
 
   return LocationData;
 };
+
 //TODO: send 2 variables to the function, and use them in the api call (lat and lon)
 const getWeather = async (lat, lon) => {
   const response = await fetch(
