@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import React ,{ useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import Modal from "@mui/material/Modal";
 import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
@@ -7,6 +7,7 @@ import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
+import { createBook } from "../../ApiService";
 
 export default function AddBookModal({ open, onClose, onAdd, propNames }) {
   const initialState = propNames.reduce((state, propName) => {
@@ -50,22 +51,21 @@ export default function AddBookModal({ open, onClose, onAdd, propNames }) {
     onClose();
   };
 
-const handleAddBook = () => {
+  const handleAddBook = () => {
     // Create new book object
     const newBook = {};
     for (const propName in formData) {
-      let formattedPropName = propName.replace(/\s+/g, '_'); // Replace spaces with underscores
+      let formattedPropName = propName.replace(/\s+/g, "_"); // Replace spaces with underscores
       newBook[formattedPropName] = formData[propName].value;
     }
-  
+
     // Add new book
     onAdd(newBook);
-    console.log(newBook);
-  
+    createBook(newBook);
+
     // Close modal
     onClose();
   };
-  
 
   return (
     <Modal
@@ -89,27 +89,26 @@ const handleAddBook = () => {
         </Typography>
         {propNames.map((propName, index) => (
           <React.Fragment key={index}>
-
             {propName === "reading status" ? (
-             <>
-             {/* <InputLabel id="reading-status-label">Reading Status</InputLabel> */}
-             <Select
-            //    labelId="reading-status-label"
-               label= "reading status" 
-               id="select"
-               variant="outlined"
-               fullWidth
-               value={formData[propName].value}
-               onChange={handleChange}
-               name={propName}
-               sx={{ mt: 2 }}
-             >
-               <MenuItem value="1">Not Started</MenuItem>
-               <MenuItem value="2">In Progress</MenuItem>
-               <MenuItem value="3">Completed</MenuItem>
-               <MenuItem value="4">On Hold</MenuItem>
-             </Select>
-           </>
+              <>
+                {/* <InputLabel id="reading-status-label">Reading Status</InputLabel> */}
+                <Select
+                  //    labelId="reading-status-label"
+                  label="reading status"
+                  id="select"
+                  variant="outlined"
+                  fullWidth
+                  value={formData[propName].value}
+                  onChange={handleChange}
+                  name={propName}
+                  sx={{ mt: 2 }}
+                >
+                  <MenuItem value="1">Not Started</MenuItem>
+                  <MenuItem value="2">In Progress</MenuItem>
+                  <MenuItem value="3">Completed</MenuItem>
+                  <MenuItem value="4">On Hold</MenuItem>
+                </Select>
+              </>
             ) : (
               <TextField
                 label={propName}

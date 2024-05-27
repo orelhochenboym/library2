@@ -1,7 +1,6 @@
 const getDb = require("../db");
 
 exports.getAllBooks = async (req, res) => {
-  console.log("get all books")
   const { requestId } = req;
 
   try {

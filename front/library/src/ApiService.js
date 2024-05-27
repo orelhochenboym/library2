@@ -2,7 +2,8 @@ import axios from "axios";
 
 const api = async () => {
   const api = axios.create({
-    baseURL: process.env.API_URL,
+    //process.env.API_URL,
+    baseURL: import.meta.env.API_URL,
   });
   return api;
 };

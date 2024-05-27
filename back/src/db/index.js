@@ -7,7 +7,7 @@ const Sequelize = require("sequelize");
 const db = {
   initialized: false,
 };
-console.log(Sequelize.DataTypes.SERIAL)
+
 fs.readdirSync(__dirname + "/models")
   .filter((file) => {
     return (
