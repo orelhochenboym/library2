@@ -1,5 +1,5 @@
-import { Sequelize } from "sequelize";
-import envVar from "../../config";
+const Sequelize = require("sequelize");
+const envVar = require("../../config");
 
 const getConnection = () => {
   const { dbHost, dbDatabase, dbUser, dbPassword } = envVar;
@@ -19,4 +19,4 @@ const getConnection = () => {
 };
 
 const connection = getConnection();
-export default connection;
+module.exports = connection;

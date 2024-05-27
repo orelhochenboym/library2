@@ -1,6 +1,6 @@
 require("dotenv").config();
-
-import { get } from "env-var";
+const envVario = require('env-var');
+const get = envVario.get;
 
 const NODE_ENV = get("NODE_ENV").default("production").asString();
 const envVar = {
@@ -14,4 +14,4 @@ const envVar = {
   nodeEnv: NODE_ENV,
 };
 
-export default envVar;
+module.exports = envVar;

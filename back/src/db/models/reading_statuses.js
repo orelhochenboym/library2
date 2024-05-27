@@ -15,7 +15,7 @@ export default function (sequelize, DataTypes) {
       {
         sequelize,
         tableName: "reading_statuses",
-        schema: "kodkod",
+        schema: "library",
         timestamps: false,
       },
     );

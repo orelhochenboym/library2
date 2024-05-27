@@ -1,4 +1,4 @@
-export default function (sequelize, DataTypes) {
+module.exports = function (sequelize, DataTypes) {
     const books = sequelize.define(
       "books",
       {
@@ -39,7 +39,7 @@ export default function (sequelize, DataTypes) {
       {
         sequelize,
         tableName: "books",
-        schema: "kodkod",
+        schema: "library",
         timestamps: false,
       },
     );
