@@ -1,9 +1,18 @@
 /* eslint-disable react/prop-types */
 import { List } from "@mui/material";
 import BookCard from "../BookCard/BookCard";
+import { useContext } from "react";
+import { GlobalContext } from "../../contexts/GlobalContext";
 
 export default function BooksDisplay(props) {
-  const { books } = props;
+  const { books } = useContext(GlobalContext);
+  console.log("books");
+  console.log(books);
+
+  console.log("GlobalContext")
+  console.log(useContext(GlobalContext))
+
+  // const { books } = props;
 
   return (
     <List

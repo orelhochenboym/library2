@@ -2,8 +2,9 @@ import axios from "axios";
 
 const api = async () => {
   const api = axios.create({
-    //process.env.API_URL,
-    baseURL: import.meta.env.API_URL,
+    baseURL:  "http://localhost:80/",
+    // baseURL:  process.env.API_URL,
+    // baseURL: import.meta.env.API_URL,
   });
   return api;
 };
