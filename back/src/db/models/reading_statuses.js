@@ -1,4 +1,4 @@
-export default function (sequelize, DataTypes) {
+module.exports = function (sequelize, DataTypes) {
     const reading_statuses = sequelize.define(
       "reading_statuses",
       {
