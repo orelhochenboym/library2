@@ -5,8 +5,8 @@ import { getAllreadingStatuses, getAllBooks } from '../ApiService'; // Assuming 
 
 const GlobalContext = createContext({
   statuses: [],
-  books: [], // Add the 'books' property to the context initial value
-  setStatuses: () => {}, // Placeholder functions for setting state
+  books: [],
+  setStatuses: () => {},
   setBooks: () => {},
 });
 
@@ -18,9 +18,11 @@ const ContextProvider = ({ children }) => {
     const fetchStatuses = async () => {
       try {
         const response = await getAllreadingStatuses();
-        if (!response.ok) {
+
+        if (!response.statusText == 'OK') {
           throw new Error('Failed to fetch statuses');
         }
+
         const data = response.data;
         setStatuses(data);
       } catch (error) {
@@ -28,26 +30,27 @@ const ContextProvider = ({ children }) => {
       }
     };
 
-    const fetchBooks = async () => { // Add function to fetch books
+    const fetchBooks = async () => {
       try {
-        const response = await getAllBooks(); // Replace with actual API call
-        if (!response.ok) {
+        const response = await getAllBooks(); 
+
+        if (!response.statusText == 'OK') {
           throw new Error('Failed to fetch books');
         }
+
         const data = response.data;
-        setBooks(data); // Assuming your API returns books data
-     
+        setBooks(data);
       } catch (error) {
         console.error(error);
       }
     };
 
     fetchStatuses();
-    fetchBooks(); // Call fetchBooks in the effect
+    fetchBooks();
   }, [setBooks, setStatuses]);
 
   return (
-    <GlobalContext.Provider value={{ statuses, books, setStatuses, setBooks }}>
+    <GlobalContext.Provider value={{ statuses, books, setBooks }}>
       {children}
     </GlobalContext.Provider>
   );

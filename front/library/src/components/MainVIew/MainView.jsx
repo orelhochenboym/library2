@@ -8,41 +8,12 @@ import SearchBar from "../SearchBar/SearchBar";
 import BooksDisplay from "../BooksDisplay/BooksDisplay";
 import AddBookModal from "../BookModals/AddBookModal";
 import BookDetailsModal from "../BookModals/BookDetailsModal";
+import { useContext } from "react";
+import { GlobalContext } from "../../contexts/GlobalContext";
 
 function MainView() {
   const [searchQuery, setSearchQuery] = useState("");
-  const [books, setBooks] = useState([
-    {
-      id: 1,
-      name: "The Great Gatsby",
-      author: "F. Scott Fitzgerald",
-      genre: "Classic",
-      page_count: 180,
-      current_page: 100,
-      reading_status: "Reading",
-      published_date: "April 10, 1925",
-    },
-    {
-      id: 2,
-      name: "To Kill a Mockingbird",
-      author: "Harper Lee",
-      genre: "Fiction",
-      page_count: 281,
-      current_page: 200,
-      reading_status: "Completed",
-      published_date: "July 11, 1960",
-    },
-    {
-      id: 3,
-      name: "1984",
-      author: "George Orwell",
-      genre: "Dystopian",
-      page_count: 328,
-      current_page: 50,
-      reading_status: "Reading",
-      published_date: "June 8, 1949",
-    }
-  ]);
+  const { books, setBooks } = useContext(GlobalContext);
   const [openAddModal, setOpenAddModal] = useState(false);
   const [selectedBook, setSelectedBook] = useState(null);
   const [openDetailsModal, setOpenDetailsModal] = useState(false);
