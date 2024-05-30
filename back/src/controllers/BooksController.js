@@ -24,7 +24,7 @@ exports.getAllBooks = async (req, res) => {
 exports.updateReadingStatus = async (req, res) => {
   const { requestId } = req;
   const { id, reading_status } =
-    req.body.data;
+    req.body;
 
   try {
     const db = await getDb();
@@ -56,7 +56,7 @@ exports.updateReadingStatus = async (req, res) => {
 exports.updateCurrentPage = async (req, res) => {
   const { requestId } = req;
   const { id, current_page } =
-    req.body.data;
+    req.body;
 
   try {
     const db = await getDb();
@@ -113,6 +113,8 @@ exports.deleteBook = async (req, res) => {
 
   exports.createBook = async (req, res) => {
     const { requestId } = req;
+    console.log("req.body.data create book");
+    console.log(req.body);
 
     const { 
         name,
