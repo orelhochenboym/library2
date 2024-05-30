@@ -10,6 +10,7 @@ import MenuItem from "@mui/material/MenuItem";
 import { createBook } from "../../ApiService";
 
 export default function AddBookModal({ open, onClose, onAdd, propNames }) {
+
   const initialState = propNames.reduce((state, propName) => {
     state[propName] = {
       value: "",
@@ -51,7 +52,8 @@ export default function AddBookModal({ open, onClose, onAdd, propNames }) {
     onClose();
   };
 
-  const handleAddBook = () => {
+  const handleAddBook = async () => {
+
     // Create new book object
     const newBook = {};
     for (const propName in formData) {
@@ -59,11 +61,13 @@ export default function AddBookModal({ open, onClose, onAdd, propNames }) {
       newBook[formattedPropName] = formData[propName].value;
     }
 
-    // Add new book
-    onAdd(newBook);
-    createBook(newBook);
+    const response = await createBook(newBook);
 
-    // Close modal
+    if (!response.statusText == 'OK') {
+      throw new Error('Failed to add new book');
+    }
+
+    onAdd(newBook);
     onClose();
   };
 
@@ -103,10 +107,10 @@ export default function AddBookModal({ open, onClose, onAdd, propNames }) {
                   name={propName}
                   sx={{ mt: 2 }}
                 >
-                  <MenuItem value="1">Not Started</MenuItem>
-                  <MenuItem value="2">In Progress</MenuItem>
-                  <MenuItem value="3">Completed</MenuItem>
-                  <MenuItem value="4">On Hold</MenuItem>
+                  <MenuItem value="0">Not Started</MenuItem>
+                  <MenuItem value="1">In Progress</MenuItem>
+                  <MenuItem value="2">Completed</MenuItem>
+                  <MenuItem value="3">On Hold</MenuItem>
                 </Select>
               </>
             ) : (

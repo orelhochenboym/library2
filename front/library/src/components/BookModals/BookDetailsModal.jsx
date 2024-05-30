@@ -8,6 +8,7 @@ import TextField from "@mui/material/TextField";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import Button from "@mui/material/Button";
+import { updateCurrentPage, updateReadingStatus } from "../../ApiService";
 
 export default function BookDetailsModal({ open, onClose, book, onUpdate }) {
   const [currentPage, setCurrentPage] = useState(book.current_page);
@@ -25,12 +26,33 @@ export default function BookDetailsModal({ open, onClose, book, onUpdate }) {
     onClose();
   };
 
-  const handleSave = () => {
-    onUpdate({
-      ...book,
-      current_page: currentPage,
-      reading_status: readingStatus,
-    });
+  const handleSave = async () => {
+    if (currentPage !== book.current_page) {
+      const response = await updateCurrentPage(book.id, currentPage);
+
+      if (!response.statusText == 'OK') {
+        throw new Error('Failed to update current page');
+      }
+
+      onUpdate({
+        ...book,
+        current_page: currentPage,
+      });
+    }
+
+    if (readingStatus !== book.readingStatus) {
+      const response = await updateReadingStatus(book.id, readingStatus);
+
+      if (!response.statusText == 'OK') {
+        throw new Error('Failed to update reading status');
+      }
+
+      onUpdate({
+        ...book,
+        readingStatus: readingStatus,
+      });
+    }
+
     onClose();
   };
 

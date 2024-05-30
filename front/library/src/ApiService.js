@@ -15,15 +15,16 @@ export const getAllBooks = async () => {
   });
 };
 
-export const updateCurrentPage = async ({id, current_page}) => {
+export const updateCurrentPage = async (id, current_page) => {
   return await api().then(async (api) => {
     return api.put(`/books/currentPage`, {id, current_page});
   });
 };
 
-export const updateReadingStatus = async ({id, reading_status}) => {
+export const updateReadingStatus = async (id, reading_status) => {
   return await api().then(async (api) => {
-    return api.put(`/books/readingStatus`, {id, reading_status});
+    // return api.put(`/books/readingStatus`,reading_status);
+    return api.put(`/books/readingStatus`, { id, reading_status});
   });
 };
 
