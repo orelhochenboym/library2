@@ -38,7 +38,7 @@ export default function BookCard(props) {
 
   const handleUpdateBook = (updatedBook) => {
     //bugged kinda for some reason doesnt change the page count in the main view
-    setBooks(books => books.map(book => book.id === id
+    setBooks(books => books.map(book => book.id === updatedBook.id
       ? { ...book, current_page: updatedBook.current_page }
       : book
     ));
