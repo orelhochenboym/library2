@@ -1,19 +1,36 @@
 /* eslint-disable no-undef */
 /* eslint-disable react/prop-types */
 import { useState } from "react";
-import { ListItem, ListItemText, Divider, Typography } from "@mui/material";
+import {
+  ListItem,
+  ListItemText,
+  Divider,
+  Typography,
+  IconButton,
+} from "@mui/material";
 import BookDetailsModal from "../BookModals/BookDetailsModal";
+import DeleteIcon from "@mui/icons-material/Delete";
+import DeleteBookModal from "../BookModals/DeleteBookModal";
 
 export default function BookCard(props) {
   const { id, name, ...otherProps } = props;
-  const [openModal, setOpenModal] = useState(false);
+  const [openDetailsModal, setOpenDetailsModal] = useState(false);
+  const [openDeleteModal, setOpenDeleteModal] = useState(false);
 
-  const handleOpenModal = () => {
-    setOpenModal(true);
+  const handleOpenDetailsModal = () => {
+    setOpenDetailsModal(true);
   };
 
-  const handleCloseModal = () => {
-    setOpenModal(false);
+  const handleCloseDetailsModal = () => {
+    setOpenDetailsModal(false);
+  };
+
+  const handleOpenDeleteModal = () => {
+    setOpenDeleteModal(true);
+  };
+
+  const handleCloseDeleteModal = () => {
+    setOpenDeleteModal(false);
   };
 
   const handleUpdateBook = (updatedBook) => {
@@ -21,10 +38,17 @@ export default function BookCard(props) {
     console.log("Updated book details:", updatedBook);
   };
 
+  const handleDeleteBook = (deletedBook) => {
+    // Here you can handle updating the book details
+    setBooks(books.filter((book) => book.id !== deletedBook.id));
+    console.log("Deleted book details:", deletedBook);
+  };
+
+
   return (
     <>
       <ListItem
-        onClick={handleOpenModal}
+        onClick={handleOpenDetailsModal}
         key={id}
         sx={{
           width: "60%",
@@ -34,8 +58,17 @@ export default function BookCard(props) {
           backgroundColor: "white", // Set background color to white
         }}
       >
+        <IconButton
+          onClick={(event) => {
+            event.stopPropagation();
+            handleOpenDeleteModal();
+          }}
+          sx={{ mr: "2rem" }}
+        >
+          <DeleteIcon sx={{ color: "red" }} />
+        </IconButton>
         <ListItemText
-          onClick={handleOpenModal}
+          // onClick={handleOpenDetailsModal}
           primary={<Typography variant="h6">{name}</Typography>}
           secondary={Object.entries(otherProps).map(([key, value]) => {
             return (
@@ -55,14 +88,25 @@ export default function BookCard(props) {
       <Divider component="li" />
 
       <BookDetailsModal
-        open={openModal}
-        onClose={handleCloseModal}
+        open={openDetailsModal}
+        onClose={handleCloseDetailsModal}
         book={{
           id,
           name,
           ...otherProps,
         }}
         onUpdate={handleUpdateBook}
+      />
+
+      <DeleteBookModal
+        open={openDeleteModal}
+        onClose={handleCloseDeleteModal}
+        book={{
+          id,
+          name,
+          ...otherProps,
+        }}
+        onDelete={handleDeleteBook}
       />
     </>
   );
