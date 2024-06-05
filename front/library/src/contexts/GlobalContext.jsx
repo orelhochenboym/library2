@@ -47,7 +47,7 @@ const ContextProvider = ({ children }) => {
 
     fetchStatuses();
     fetchBooks();
-  }, [setBooks, setStatuses]);
+  }, []);
 
   return (
     <GlobalContext.Provider value={{ statuses, books, setBooks }}>

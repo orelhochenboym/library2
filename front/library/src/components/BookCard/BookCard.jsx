@@ -11,8 +11,11 @@ import {
 import BookDetailsModal from "../BookModals/BookDetailsModal";
 import DeleteIcon from "@mui/icons-material/Delete";
 import DeleteBookModal from "../BookModals/DeleteBookModal";
+import { useContext } from "react";
+import { GlobalContext } from "../../contexts/GlobalContext";
 
 export default function BookCard(props) {
+  const { books, setBooks } = useContext(GlobalContext);
   const { id, name, ...otherProps } = props;
   const [openDetailsModal, setOpenDetailsModal] = useState(false);
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
@@ -34,14 +37,15 @@ export default function BookCard(props) {
   };
 
   const handleUpdateBook = (updatedBook) => {
-    // Here you can handle updating the book details
-    console.log("Updated book details:", updatedBook);
+    //bugged kinda for some reason doesnt change the page count in the main view
+    setBooks(books => books.map(book => book.id === id
+      ? { ...book, current_page: updatedBook.current_page }
+      : book
+    ));
   };
 
   const handleDeleteBook = (deletedBook) => {
-    // Here you can handle updating the book details
     setBooks(books.filter((book) => book.id !== deletedBook.id));
-    console.log("Deleted book details:", deletedBook);
   };
 
 
