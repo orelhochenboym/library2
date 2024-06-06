@@ -28,6 +28,7 @@ export default function BookDetailsModal({ open, onClose, book, onUpdate }) {
 
   const handleSave = async () => {
     if (currentPage !== book.current_page) {
+      console.log("updateding current page " + currentPage + " book id" + book.id + "old current page" + book.current_page)
       const response = await updateCurrentPage(book.id, currentPage);
 
       if (!response.statusText == 'OK') {
@@ -40,18 +41,20 @@ export default function BookDetailsModal({ open, onClose, book, onUpdate }) {
       });
     }
 
-    if (readingStatus !== book.readingStatus) {
-      const response = await updateReadingStatus(book.id, readingStatus);
+    //bugged check later why old reading status undefined 
+    // if (readingStatus !== book.readingStatus) {
+    //   console.log("updateding reading status " + readingStatus + " book id" + book.id + "old reading status" + book.readingStatus)
+    //   const response = await updateReadingStatus(book.id, readingStatus);
 
-      if (!response.statusText == 'OK') {
-        throw new Error('Failed to update reading status');
-      }
+    //   if (!response.statusText == 'OK') {
+    //     throw new Error('Failed to update reading status');
+    //   }
 
-      onUpdate({
-        ...book,
-        readingStatus: readingStatus,
-      });
-    }
+    //   onUpdate({
+    //     ...book,
+    //     readingStatus: readingStatus,
+    //   });
+    // }
 
     onClose();
   };
@@ -60,8 +63,6 @@ export default function BookDetailsModal({ open, onClose, book, onUpdate }) {
     <Modal
       open={open}
       onClose={handleClose}
-      aria-labelledby="book-details-modal"
-      aria-describedby="book-details-modal-description"
     >
       <Paper
         sx={{

@@ -1,6 +1,6 @@
 /* eslint-disable no-undef */
 /* eslint-disable react/prop-types */
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import {
   ListItem,
   ListItemText,
@@ -36,18 +36,16 @@ export default function BookCard(props) {
     setOpenDeleteModal(false);
   };
 
-  const handleUpdateBook = (updatedBook) => {
-    //bugged kinda for some reason doesnt change the page count in the main view
-    setBooks(books => books.map(book => book.id === updatedBook.id
+  const handleUpdateBook = useCallback((updatedBook) => {
+    setBooks(books.map(book => book.id === updatedBook.id
       ? { ...book, current_page: updatedBook.current_page }
       : book
     ));
-  };
+  }, [books]) ;
 
   const handleDeleteBook = (deletedBook) => {
     setBooks(books.filter((book) => book.id !== deletedBook.id));
   };
-
 
   return (
     <>
