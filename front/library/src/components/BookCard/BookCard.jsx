@@ -16,7 +16,6 @@ import { GlobalContext } from "../../contexts/GlobalContext";
 
 export default function BookCard(props) {
   const { books, setBooks, statuses } = useContext(GlobalContext);
-  console.log(statuses);
   const { id, name, ...otherProps } = props;
   const [openDetailsModal, setOpenDetailsModal] = useState(false);
   const [openDeleteModal, setOpenDeleteModal] = useState(false);

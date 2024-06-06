@@ -43,8 +43,7 @@ export default function BookDetailsModal({ open, onClose, book, onUpdate }) {
       });
     }
 
-    if (readingStatus !== book.readingStatus) {
-      console.log("updateding reading status " + readingStatus + " book id" + book.id + "old reading status" + book.readingStatus)
+    if (readingStatus !== book.reading_status) {
       const response = await updateReadingStatus(book.id, readingStatus);
 
       if (!response.statusText == 'OK') {
@@ -53,7 +52,7 @@ export default function BookDetailsModal({ open, onClose, book, onUpdate }) {
 
       onUpdate({
         ...book,
-        readingStatus: readingStatus,
+        reading_status: readingStatus,
       });
     }
 
