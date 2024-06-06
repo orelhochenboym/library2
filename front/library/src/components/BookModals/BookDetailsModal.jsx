@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 // BookDetailsModal.js
-import { useState } from "react";
+import { useContext, useState } from "react";
 import Modal from "@mui/material/Modal";
 import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
@@ -9,8 +9,10 @@ import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import Button from "@mui/material/Button";
 import { updateCurrentPage, updateReadingStatus } from "../../ApiService";
+import { GlobalContext } from "../../contexts/GlobalContext";
 
 export default function BookDetailsModal({ open, onClose, book, onUpdate }) {
+  const { statuses } = useContext(GlobalContext);
   const [currentPage, setCurrentPage] = useState(book.current_page);
   const [readingStatus, setReadingStatus] = useState(book.reading_status);
 
@@ -41,20 +43,19 @@ export default function BookDetailsModal({ open, onClose, book, onUpdate }) {
       });
     }
 
-    //bugged check later why old reading status undefined 
-    // if (readingStatus !== book.readingStatus) {
-    //   console.log("updateding reading status " + readingStatus + " book id" + book.id + "old reading status" + book.readingStatus)
-    //   const response = await updateReadingStatus(book.id, readingStatus);
+    if (readingStatus !== book.readingStatus) {
+      console.log("updateding reading status " + readingStatus + " book id" + book.id + "old reading status" + book.readingStatus)
+      const response = await updateReadingStatus(book.id, readingStatus);
 
-    //   if (!response.statusText == 'OK') {
-    //     throw new Error('Failed to update reading status');
-    //   }
+      if (!response.statusText == 'OK') {
+        throw new Error('Failed to update reading status');
+      }
 
-    //   onUpdate({
-    //     ...book,
-    //     readingStatus: readingStatus,
-    //   });
-    // }
+      onUpdate({
+        ...book,
+        readingStatus: readingStatus,
+      });
+    }
 
     onClose();
   };
@@ -102,10 +103,11 @@ export default function BookDetailsModal({ open, onClose, book, onUpdate }) {
           onChange={handleReadingStatusChange}
           sx={{ mt: 2 }}
         >
-          <MenuItem value="Reading">Reading</MenuItem>
-          <MenuItem value="Completed">Completed</MenuItem>
-          <MenuItem value="On Hold">On Hold</MenuItem>
-          <MenuItem value="Not Started">Not Started</MenuItem>
+          {statuses.map((status) => (
+            <MenuItem key={status.id} value={status.id}>
+              {status.name}
+            </MenuItem>
+          ))}
         </Select>
         <Button
           onClick={handleSave}

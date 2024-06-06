@@ -15,7 +15,8 @@ import { useContext } from "react";
 import { GlobalContext } from "../../contexts/GlobalContext";
 
 export default function BookCard(props) {
-  const { books, setBooks } = useContext(GlobalContext);
+  const { books, setBooks, statuses } = useContext(GlobalContext);
+  console.log(statuses);
   const { id, name, ...otherProps } = props;
   const [openDetailsModal, setOpenDetailsModal] = useState(false);
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
@@ -36,12 +37,18 @@ export default function BookCard(props) {
     setOpenDeleteModal(false);
   };
 
-  const handleUpdateBook = useCallback((updatedBook) => {
-    setBooks(books.map(book => book.id === updatedBook.id
-      ? { ...book, current_page: updatedBook.current_page }
-      : book
-    ));
-  }, [books]) ;
+  const handleUpdateBook = useCallback(
+    (updatedBook) => {
+      setBooks(
+        books.map((book) =>
+          book.id === updatedBook.id
+            ? { ...book, current_page: updatedBook.current_page, reading_status: updatedBook.reading_status}
+            : book
+        )
+      );
+    },
+    [books]
+  );
 
   const handleDeleteBook = (deletedBook) => {
     setBooks(books.filter((book) => book.id !== deletedBook.id));
@@ -56,8 +63,8 @@ export default function BookCard(props) {
           width: "60%",
           // maxWidth: 600,
           margin: "16px",
-          color: "black", // Set text color to black
-          backgroundColor: "white", // Set background color to white
+          color: "black",
+          backgroundColor: "white",
         }}
       >
         <IconButton
@@ -70,7 +77,6 @@ export default function BookCard(props) {
           <DeleteIcon sx={{ color: "red" }} />
         </IconButton>
         <ListItemText
-          // onClick={handleOpenDetailsModal}
           primary={<Typography variant="h6">{name}</Typography>}
           secondary={Object.entries(otherProps).map(([key, value]) => {
             return (
@@ -80,7 +86,10 @@ export default function BookCard(props) {
                 variant="body2"
                 color="textSecondary"
               >
-                {key.replace(/_/g, " ").toLowerCase()}: {value}
+                {key.replace(/_/g, " ").toLowerCase()}:{" "}
+                {key === "reading_status"
+                  ? statuses.find((status) => status.id === value).name
+                  : value}
                 <br />
               </Typography>
             );
