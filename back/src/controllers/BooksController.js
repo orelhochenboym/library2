@@ -128,6 +128,9 @@ exports.deleteBook = async (req, res) => {
   
     try {
       const db = await getDb();
+      // const published_date = published_date.replaceAll('/', '.')
+      // date = published_date.replaceAll('/', '.')
+      // console.log("date", date);
       const book = await db.books.create({
         name,
         author,

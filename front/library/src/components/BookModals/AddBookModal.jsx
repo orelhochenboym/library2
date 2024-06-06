@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import Modal from "@mui/material/Modal";
 import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
@@ -8,8 +8,10 @@ import Button from "@mui/material/Button";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import { createBook } from "../../ApiService";
+import { GlobalContext } from "../../contexts/GlobalContext";
 
 export default function AddBookModal({ open, onClose, onAdd, propNames }) {
+  const { statuses } = useContext(GlobalContext);
 
   const initialState = propNames.reduce((state, propName) => {
     state[propName] = {
@@ -27,17 +29,19 @@ export default function AddBookModal({ open, onClose, onAdd, propNames }) {
   }, [formData]);
 
   const isValidDate = (dateString) => {
-    const regex = /^(0[1-9]|1[0-2])\/(0[1-9]|[12][0-9]|3[01])\/\d{4}$/;
-    return regex.test(dateString);
+    return true
+    // const regex = /^(0[1-9]|1[0-2])\/(0[1-9]|[12][0-9]|3[01])\/\d{4}$/;
+    // return regex.test(dateString);
   };
 
   const handleChange = (event) => {
     const { name, value } = event.target;
+    console.log(["reading status" ,"current page"].includes(name));
     let isValid;
-    if (name === "published_date") {
+    if (name === "published date") {
       isValid = isValidDate(value);
     } else {
-      isValid = value.trim() !== "" || name === "current page"; // Basic validation for empty values, except for "Current Page"
+      isValid = ["reading status" ,"current page"].includes(name) || value.trim() !== "";
     }
     setFormData((prevData) => ({
       ...prevData,
@@ -53,18 +57,26 @@ export default function AddBookModal({ open, onClose, onAdd, propNames }) {
   };
 
   const handleAddBook = async () => {
-
     // Create new book object
     const newBook = {};
     for (const propName in formData) {
       let formattedPropName = propName.replace(/\s+/g, "_"); // Replace spaces with underscores
-      newBook[formattedPropName] = formData[propName].value;
+
+      console.log("raw date")
+      console.log( formattedPropName === "published_date" 
+      ? formData[propName].value : "");
+      console.log("when you try your best date")
+      console.log( formattedPropName === "published_date" 
+      ? (new Date(  formData[propName].value.replaceAll("/",".") ).toDateString()) : "")
+      // formData[propName].value.replaceAll("/",".") 
+      newBook[formattedPropName] = formattedPropName === "published_date" 
+      ? (new Date(formData[propName].value).toDateString()) : formData[propName].value;
     }
 
     const response = await createBook(newBook);
 
-    if (!response.statusText == 'OK') {
-      throw new Error('Failed to add new book');
+    if (!response.statusText == "OK") {
+      throw new Error("Failed to add new book");
     }
 
     onAdd(newBook);
@@ -107,10 +119,11 @@ export default function AddBookModal({ open, onClose, onAdd, propNames }) {
                   name={propName}
                   sx={{ mt: 2 }}
                 >
-                  <MenuItem value="0">Not Started</MenuItem>
-                  <MenuItem value="1">In Progress</MenuItem>
-                  <MenuItem value="2">Completed</MenuItem>
-                  <MenuItem value="3">On Hold</MenuItem>
+                  {statuses.map((status) => (
+                    <MenuItem key={status.id} value={status.id}>
+                      {status.name}
+                    </MenuItem>
+                  ))}
                 </Select>
               </>
             ) : (
