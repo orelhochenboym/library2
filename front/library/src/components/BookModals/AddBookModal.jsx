@@ -29,9 +29,8 @@ export default function AddBookModal({ open, onClose, onAdd, propNames }) {
   }, [formData]);
 
   const isValidDate = (dateString) => {
-    return true
-    // const regex = /^(0[1-9]|1[0-2])\/(0[1-9]|[12][0-9]|3[01])\/\d{4}$/;
-    // return regex.test(dateString);
+    const regex = /^(0[1-9]|1[0-2])\/(0[1-9]|[12][0-9]|3[01])\/\d{4}$/;
+    return regex.test(dateString);
   };
 
   const handleChange = (event) => {
@@ -57,18 +56,10 @@ export default function AddBookModal({ open, onClose, onAdd, propNames }) {
   };
 
   const handleAddBook = async () => {
-    // Create new book object
     const newBook = {};
     for (const propName in formData) {
       let formattedPropName = propName.replace(/\s+/g, "_"); // Replace spaces with underscores
 
-      console.log("raw date")
-      console.log( formattedPropName === "published_date" 
-      ? formData[propName].value : "");
-      console.log("when you try your best date")
-      console.log( formattedPropName === "published_date" 
-      ? (new Date(  formData[propName].value.replaceAll("/",".") ).toDateString()) : "")
-      // formData[propName].value.replaceAll("/",".") 
       newBook[formattedPropName] = formattedPropName === "published_date" 
       ? (new Date(formData[propName].value).toDateString()) : formData[propName].value;
     }
